@@ -220,6 +220,8 @@
       #viewer canvas {
         border-radius: 18px;
         display: block;
+        width: 100% !important;
+        height: 100% !important;
       }
 
       .panel {
@@ -441,11 +443,16 @@
 
       @media (max-width: 640px) {
         body {
-          padding: 18px;
+          padding: clamp(16px, 6vw, 20px);
+          align-items: flex-start;
+          justify-content: flex-start;
         }
 
         .experience {
-          padding: 24px 20px;
+          width: 100%;
+          padding: 22px 18px;
+          gap: 20px;
+          border-radius: 22px;
         }
 
         .experience-header {
@@ -454,14 +461,124 @@
           gap: 18px;
         }
 
+        .progress {
+          width: 100%;
+          justify-content: space-between;
+          gap: 10px;
+        }
+
+        .progress-dots {
+          flex: 1 1 auto;
+          justify-content: flex-end;
+          display: inline-flex;
+          gap: 6px;
+        }
+
+        .scene {
+          gap: 18px;
+        }
+
+        .scene h1,
+        .scene h2 {
+          font-size: clamp(1.5rem, 6.4vw, 2.2rem);
+        }
+
+        .scene p {
+          font-size: 0.95rem;
+        }
+
+        .viewer-shell {
+          padding: 12px;
+          border-radius: 18px;
+        }
+
+        #viewer {
+          height: clamp(220px, 56vw, 340px);
+          border-radius: 16px;
+        }
+
+        .panel,
+        .metric,
+        .timeline-step,
+        .education-card {
+          padding: 16px;
+          border-radius: 16px;
+        }
+
+        .process-list {
+          gap: 10px;
+        }
+
+        .process-list li {
+          padding: 10px 12px;
+          border-radius: 12px;
+        }
+
+        table {
+          font-size: 0.9rem;
+        }
+
+        th,
+        td {
+          padding: 12px 14px;
+        }
+
         .experience-footer {
           flex-direction: column-reverse;
           align-items: stretch;
+          gap: 14px;
         }
 
         .btn-primary,
         .btn-secondary {
           width: 100%;
+          padding: 12px 18px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 14px 12px;
+        }
+
+        .experience {
+          padding: 20px 16px;
+        }
+
+        .screen-label {
+          font-size: 0.72rem;
+          padding: 5px 12px;
+        }
+
+        .progress {
+          gap: 8px;
+        }
+
+        .progress-dots {
+          flex-basis: 100%;
+          justify-content: flex-start;
+        }
+
+        .dot {
+          width: 8px;
+          height: 8px;
+        }
+
+        #viewer {
+          height: clamp(200px, 68vw, 300px);
+        }
+
+        .metric strong {
+          font-size: 1.32rem;
+        }
+
+        table {
+          font-size: 0.86rem;
+        }
+
+        th,
+        td {
+          padding: 10px 12px;
         }
       }
     </style>
