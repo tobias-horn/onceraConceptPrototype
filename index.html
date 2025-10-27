@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BEAM-AI Click Journey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        --bg: #050915;
+        --surface: rgba(12, 20, 42, 0.82);
+        --surface-strong: rgba(17, 27, 56, 0.92);
+        --border: rgba(80, 186, 255, 0.22);
+        --accent: #4ad7d1;
+        --accent-soft: rgba(74, 215, 209, 0.18);
+        --text: #f4f7fb;
+        --muted: rgba(244, 247, 251, 0.76);
+        --shadow: 0 40px 80px rgba(2, 8, 24, 0.6);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(24px, 4vw, 44px);
+        background: radial-gradient(circle at 18% 22%, #15264a, var(--bg));
+        color: var(--text);
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .experience {
+        width: min(940px, 100%);
+        background: linear-gradient(160deg, var(--surface), rgba(8, 12, 26, 0.92));
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        padding: clamp(26px, 4vw, 38px);
+        box-shadow: var(--shadow);
+        display: grid;
+        gap: clamp(24px, 3vw, 36px);
+        position: relative;
+      }
+
+      .experience::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: linear-gradient(
+          180deg,
+          rgba(74, 215, 209, 0.1),
+          rgba(74, 215, 209, 0)
+        );
+        pointer-events: none;
+      }
+
+      .experience-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .logo-mark {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        background: radial-gradient(circle at 30% 30%, #74f1ff, #0e7ad3);
+        display: grid;
+        place-items: center;
+        box-shadow: 0 14px 30px rgba(12, 108, 194, 0.32);
+      }
+
+      .logo-mark img {
+        width: 70%;
+        height: 70%;
+        object-fit: contain;
+        display: block;
+      }
+
+      .progress {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: var(--muted);
+        font-size: 0.85rem;
+        flex-wrap: wrap;
+      }
+
+      .progress-dots {
+        display: inline-flex;
+        gap: 8px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(74, 215, 209, 0.22);
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+
+      .dot.is-active {
+        background: var(--accent);
+        transform: scale(1.25);
+      }
+
+      .scene {
+        display: none;
+        gap: clamp(20px, 3vw, 30px);
+        position: relative;
+        z-index: 1;
+      }
+
+      .scene.is-active {
+        display: grid;
+        animation: reveal 0.35s ease forwards;
+      }
+
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .screen-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 600;
+        justify-self: start;
+      }
+
+      .scene h1,
+      .scene h2 {
+        margin: 0;
+        font-size: clamp(1.8rem, 3.3vw, 3rem);
+        letter-spacing: -0.02em;
+      }
+
+      .scene p {
+        margin: 0;
+        font-size: clamp(0.98rem, 1vw, 1.05rem);
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .hero-copy {
+        display: grid;
+        gap: clamp(18px, 2vw, 26px);
+      }
+
+      .scene[data-scene="2"] .scene-body {
+        display: grid;
+        gap: clamp(22px, 2.5vw, 30px);
+      }
+
+      .protein-split {
+        display: grid;
+        gap: clamp(22px, 2.5vw, 30px);
+      }
+
+      .viewer-shell {
+        background: #09152e;
+        border-radius: 22px;
+        border: 1px solid rgba(74, 215, 209, 0.12);
+        position: relative;
+        overflow: hidden;
+        padding: 14px;
+      }
+
+      #viewer {
+        width: 100%;
+        height: clamp(300px, 42vh, 420px);
+        border-radius: 18px;
+        background: #020812;
+        position: relative;
+        overflow: hidden;
+      }
+
+      #viewer canvas {
+        border-radius: 18px;
+        display: block;
+      }
+
+      .panel {
+        padding: clamp(20px, 2vw, 26px);
+        border-radius: 20px;
+        background: var(--surface-strong);
+        border: 1px solid rgba(74, 215, 209, 0.18);
+        display: grid;
+        gap: 16px;
+      }
+
+      .panel h3 {
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.92rem;
+        color: var(--accent);
+        margin-bottom: 16px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+        background: rgba(10, 21, 45, 0.72);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        padding: 14px 18px;
+        text-align: left;
+        border-bottom: 1px solid rgba(74, 215, 209, 0.12);
+      }
+
+      th {
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        background: rgba(74, 215, 209, 0.08);
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      .process-list {
+        display: grid;
+        gap: 12px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        margin-bottom: 6px;
+      }
+
+      .process-list li {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        background: rgba(74, 215, 209, 0.08);
+        border-radius: 14px;
+        padding: 12px 14px;
+      }
+
+      .process-list li strong {
+        font-size: 0.82rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      .impact-grid {
+        display: grid;
+        gap: clamp(20px, 2.4vw, 26px);
+      }
+
+      .impact-metrics {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .metric {
+        padding: 20px;
+        border-radius: 18px;
+        background: rgba(18, 30, 62, 0.85);
+        border: 1px solid rgba(74, 215, 209, 0.18);
+        display: grid;
+        gap: 12px;
+      }
+
+      .metric strong {
+        font-size: 1.5rem;
+        letter-spacing: -0.01em;
+      }
+
+      .metric svg {
+        width: 26px;
+        height: 26px;
+        color: var(--accent);
+      }
+
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        align-items: start;
+      }
+
+      .timeline-step {
+        padding: 18px;
+        border-radius: 16px;
+        background: rgba(10, 20, 38, 0.76);
+        border: 1px solid rgba(74, 215, 209, 0.14);
+        text-align: center;
+        display: grid;
+        gap: 10px;
+      }
+
+      .timeline-step .step-label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: rgba(74, 215, 209, 0.18);
+        color: var(--accent);
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .experience-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        position: relative;
+        z-index: 1;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 999px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      }
+
+      .btn-secondary {
+        color: var(--muted);
+        background: rgba(74, 215, 209, 0.12);
+        border: 1px solid rgba(74, 215, 209, 0.24);
+      }
+
+      .btn-secondary:disabled {
+        cursor: not-allowed;
+        opacity: 0.45;
+      }
+
+      .btn-primary {
+        color: #041123;
+        background: linear-gradient(120deg, #74ffea, #53a7ff);
+        box-shadow: 0 8px 24px rgba(83, 167, 255, 0.28);
+      }
+
+      .btn-primary:hover,
+      .btn-secondary:hover:not(:disabled) {
+        transform: translateY(-1px);
+      }
+
+      .btn-primary:hover {
+        box-shadow: 0 10px 28px rgba(83, 167, 255, 0.38);
+      }
+
+      .education-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+
+      .education-card {
+        padding: 18px;
+        border-radius: 16px;
+        background: rgba(12, 22, 45, 0.82);
+        border: 1px solid rgba(74, 215, 209, 0.14);
+        display: grid;
+        gap: 10px;
+      }
+
+      .education-card strong {
+        font-size: 1rem;
+        color: var(--text);
+        margin: 0;
+      }
+
+      .education-card p {
+        margin: 0;
+      }
+
+      @media (min-width: 880px) {
+        .protein-split {
+          grid-template-columns: 1.2fr 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        body {
+          padding: 18px;
+        }
+
+        .experience {
+          padding: 24px 20px;
+        }
+
+        .experience-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 18px;
+        }
+
+        .experience-footer {
+          flex-direction: column-reverse;
+          align-items: stretch;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="experience" role="region" aria-live="polite">
+      <div class="experience-header">
+        <div class="logo">
+          <span class="logo-mark" aria-hidden="true">
+            <img src="assets/onceraLogo.svg" alt="" />
+          </span>
+          Oncera BEAM-AI
+        </div>
+        <div class="progress" aria-live="polite">
+          <span id="stepLabel">Step 1 of 4</span>
+          <span class="progress-dots" aria-hidden="true">
+            <span class="dot is-active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="scene is-active" data-scene="1">
+        <span class="screen-label">Intro</span>
+        <div class="hero-copy">
+          <h1>BEAM-AI: We predict where a medicine can stick—before the lab.</h1>
+          <p>
+            BEAM-AI analyzes a real protein structure, ranks the best binding spots,
+            and proposes binder designs. Fewer guesses, faster answers.
+          </p>
+          <p class="muted" style="font-size: 0.9rem;">
+            Use the forward button to load the real 1MBA protein, then follow the shortlist of binders BEAM-AI suggests.
+          </p>
+        </div>
+      </div>
+
+      <div class="scene" data-scene="2" aria-hidden="true">
+        <span class="screen-label">Real Protein in Action</span>
+        <div class="scene-body protein-split">
+          <div class="viewer-shell">
+            <div id="viewer" aria-label="3D protein model viewer"></div>
+            <p class="muted" style="margin-top: 14px; font-size: 0.85rem;">
+              1MBA: Myohemerythrin (surface cartoon). Drag to rotate, scroll to zoom.
+            </p>
+          </div>
+          <div class="panel" style="gap: 22px;">
+            <div>
+              <h3>What BEAM-AI produces</h3>
+              <ul class="process-list">
+                <li>
+                  <strong>Input</strong>
+                  Upload a PDB or AlphaFold structure—BEAM-AI ingests the raw coordinates.
+                </li>
+                <li>
+                  <strong>BEAM-AI does</strong>
+                  Reads the surface, predicts high-likelihood pockets, and designs candidate binders tailored to those regions.
+                </li>
+                <li>
+                  <strong>Output</strong>
+                  A ranked shortlist with BEAM-Scores so teams immediately focus on the tightest predicted binders.
+                </li>
+              </ul>
+            </div>
+            <div>
+              <table aria-label="Ranked BEAM-AI candidates">
+                <thead>
+                  <tr>
+                    <th scope="col">Candidate</th>
+                    <th scope="col">BEAM-Score</th>
+                    <th scope="col">Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Candidate A</td>
+                    <td>0.23</td>
+                    <td>Tight fit; strong charge complementarity</td>
+                  </tr>
+                  <tr>
+                    <td>Candidate B</td>
+                    <td>0.31</td>
+                    <td>Balanced shape match—good backup</td>
+                  </tr>
+                  <tr>
+                    <td>Candidate C</td>
+                    <td>0.47</td>
+                    <td>Shallow contact area—flag for redesign</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="muted" style="font-size: 0.82rem; margin-top: 10px;">
+                Scores shown are illustrative.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene" data-scene="3" aria-hidden="true">
+        <span class="screen-label">Why It Matters</span>
+        <div class="impact-grid">
+          <div class="impact-metrics">
+            <div class="metric">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" />
+                <path d="M12 7V12L15 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              </svg>
+              <strong>Typical blind screens: 1–5% hits.</strong>
+              <p class="muted">
+                Trial-and-error wastes cycles in the lab with tiny hit-rates.
+              </p>
+            </div>
+            <div class="metric">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" />
+                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8" />
+                <circle cx="12" cy="12" r="1.6" fill="currentColor" />
+              </svg>
+              <strong>BEAM-AI top picks: ~30% hits.</strong>
+              <p class="muted">
+                Focus resources on the most promising binders first.
+              </p>
+            </div>
+          </div>
+          <div class="panel" style="gap: 18px;">
+            <h3>From idea to validation</h3>
+            <div class="timeline">
+              <div class="timeline-step">
+                <span class="step-label">1 · Hypothesis</span>
+                Identify a tumor-relevant surface to target.
+              </div>
+              <div class="timeline-step">
+                <span class="step-label">2 · BEAM-AI</span>
+                Rank &amp; design binders in weeks, not years.
+              </div>
+              <div class="timeline-step">
+                <span class="step-label">3 · Lab</span>
+                Confirm top designs and move to in-vitro tests.
+              </div>
+            </div>
+            <p class="muted">
+              We can also pick pairs of markers (AND-logic) to improve precision in tough tumors.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene" data-scene="4" aria-hidden="true">
+        <span class="screen-label">What We’re Building Next</span>
+        <div class="panel" style="gap: 22px;">
+          <p>
+            This is the roadmap: a future BEAM-AI workflow that turns today’s prototype into an end-to-end engine for structure-guided discovery.
+          </p>
+          <div class="education-grid">
+            <div class="education-card">
+              <strong>1. Surface Intelligence</strong>
+              <p class="muted">
+                Scale up physics-informed surface analysis so every new protein upload comes with an instant map of high-probability binding zones.
+              </p>
+            </div>
+            <div class="education-card">
+              <strong>2. Generative Binder Design</strong>
+              <p class="muted">
+                Layer on multi-modal generative models that tailor antibodies, peptides, or small molecules to those zones—delivering a shortlist instead of a haystack.
+              </p>
+            </div>
+            <div class="education-card">
+              <strong>3. Learn &amp; Loop</strong>
+              <p class="muted">
+                Close the loop: feed partner lab results back into BEAM-AI so scoring tightens and the recommendations get sharper with every cycle.
+              </p>
+            </div>
+          </div>
+          <p class="muted">
+            When paired with Oncera’s Tumor Avatars, this roadmap aims to validate designs on patient-relevant models before costly trials—accelerating the path from insight to clinic.
+          </p>
+        </div>
+      </div>
+
+      <div class="experience-footer">
+        <button id="prevBtn" class="btn-secondary" type="button" disabled>
+          ← Back
+        </button>
+        <button id="nextBtn" class="btn-primary" type="button">
+          See it on a real protein →
+        </button>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.6/3Dmol-min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const scenes = Array.from(document.querySelectorAll(".scene"));
+        const dots = Array.from(document.querySelectorAll(".dot"));
+        const stepLabel = document.getElementById("stepLabel");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const totalScenes = scenes.length;
+        const nextLabels = [
+          "See it on a real protein →",
+          "See the impact →",
+          "Explore the roadmap →",
+          "Book a call →",
+        ];
+        let currentScene = 0;
+        let viewer;
+        let viewerInitialized = false;
+        let viewerInitScheduled = false;
+        let spinActive = false;
+        let spinTimeoutId = null;
+        const spinRestartDelay = 1500;
+
+        const clearSpinTimeout = () => {
+          if (spinTimeoutId) {
+            clearTimeout(spinTimeoutId);
+            spinTimeoutId = null;
+          }
+        };
+
+        const startSpin = () => {
+          if (!viewer) {
+            clearSpinTimeout();
+            return;
+          }
+          viewer.spin("y", 0.5);
+          spinActive = true;
+          clearSpinTimeout();
+        };
+
+        const stopSpin = () => {
+          if (!viewer) {
+            clearSpinTimeout();
+            return;
+          }
+          viewer.spin(false);
+          spinActive = false;
+          clearSpinTimeout();
+        };
+
+        const scheduleSpin = (delay = spinRestartDelay) => {
+          if (!viewer) {
+            clearSpinTimeout();
+            return;
+          }
+          clearSpinTimeout();
+          spinTimeoutId = setTimeout(() => {
+            startSpin();
+          }, delay);
+        };
+
+        const handleResize = () => {
+          if (viewerInitialized && viewer) {
+            viewer.resize();
+            viewer.render();
+          }
+        };
+
+        function updateScene(index) {
+          scenes.forEach((scene, idx) => {
+            const isActive = idx === index;
+            scene.classList.toggle("is-active", isActive);
+            scene.setAttribute("aria-hidden", String(!isActive));
+          });
+
+          dots.forEach((dot, idx) => {
+            dot.classList.toggle("is-active", idx === index);
+          });
+
+          stepLabel.textContent = `Step ${index + 1} of ${totalScenes}`;
+          prevBtn.disabled = index === 0;
+
+          nextBtn.textContent = nextLabels[index];
+          nextBtn.dataset.action = index === totalScenes - 1 ? "cta" : "next";
+
+          currentScene = index;
+
+          if (index === 1) {
+            if (viewerInitialized) {
+              handleResize();
+              if (!spinActive) {
+                scheduleSpin(500);
+              }
+            } else if (!viewerInitScheduled) {
+              viewerInitScheduled = true;
+              requestAnimationFrame(() => {
+                initViewer();
+              });
+            }
+          } else if (spinActive) {
+            stopSpin();
+          }
+        }
+
+        function initViewer() {
+          if (viewerInitialized) {
+            viewerInitScheduled = false;
+            return;
+          }
+
+          const viewerElement = document.getElementById("viewer");
+          if (!viewerElement) {
+            viewerInitScheduled = false;
+            return;
+          }
+
+          viewer = $3Dmol.createViewer(viewerElement, {
+            backgroundColor: "#020812",
+          });
+
+          $3Dmol.download("pdb:1MBA", viewer, {}, function () {
+            viewer.setStyle({}, { cartoon: { color: "spectrum" } });
+            viewer.addSurface($3Dmol.SurfaceType.MS, {
+              opacity: 0.34,
+              color: "white",
+            });
+            viewer.zoomTo();
+            startSpin();
+            handleResize();
+          });
+
+          let pointerIsDown = false;
+
+          const stopDrag = () => {
+            pointerIsDown = true;
+            stopSpin();
+          };
+
+          const resumeSpin = (delay) => {
+            pointerIsDown = false;
+            scheduleSpin(delay);
+          };
+
+          viewerElement.addEventListener("pointerdown", stopDrag);
+          viewerElement.addEventListener("pointerup", () => resumeSpin());
+          viewerElement.addEventListener("pointercancel", () => resumeSpin());
+          viewerElement.addEventListener("pointerleave", () => {
+            if (pointerIsDown) {
+              resumeSpin();
+            }
+          });
+          viewerElement.addEventListener(
+            "wheel",
+            () => {
+              stopDrag();
+              resumeSpin();
+            },
+            { passive: true }
+          );
+          viewerElement.addEventListener(
+            "touchstart",
+            () => stopDrag(),
+            { passive: true }
+          );
+          viewerElement.addEventListener(
+            "touchend",
+            () => resumeSpin(),
+            { passive: true }
+          );
+          viewerElement.addEventListener(
+            "touchcancel",
+            () => resumeSpin(),
+            { passive: true }
+          );
+
+          viewerInitialized = true;
+          viewerInitScheduled = false;
+        }
+
+        prevBtn.addEventListener("click", function () {
+          if (currentScene === 0) {
+            return;
+          }
+          const target = Math.max(currentScene - 1, 0);
+          updateScene(target);
+        });
+
+        nextBtn.addEventListener("click", function () {
+          if (nextBtn.dataset.action === "cta") {
+            window.location.href =
+              "mailto:hello@oncera.ai?subject=Let%E2%80%99s%20Talk%20BEAM-AI&body=Hi%20Oncera%20team%2C%0A%0AI%E2%80%99d%20love%20to%20book%20a%20call%20to%20learn%20more%20about%20BEAM-AI.%0A%0AThanks%2C%0A";
+            return;
+          }
+          const target = Math.min(currentScene + 1, totalScenes - 1);
+          updateScene(target);
+        });
+
+        window.addEventListener("resize", handleResize);
+
+        updateScene(0);
+      });
+    </script>
+  </body>
+</html>
