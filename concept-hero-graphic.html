@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Oncera Concept Mockup</title>
+    <title>Oncera Concept Mockup — Theme Lab</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,9 +15,11 @@
         color-scheme: light;
         font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
+        --page-background: #ffffff;
         --bg: #f6f8fc;
         --surface: #ffffff;
         --surface-soft: #f1f3f9;
+        --sidebar-surface: #ffffff;
         --text: #121826;
         --muted: #6a748a;
         --border: #e1e6f2;
@@ -26,6 +28,40 @@
         --positive: #24a776;
         --warning: #f6b020;
         --shadow: 0 40px 80px rgba(15, 35, 80, 0.12);
+        --frame-border: rgba(226, 231, 244, 0.6);
+        --frame-overlay: linear-gradient(160deg, rgba(60, 144, 240, 0.05), transparent);
+        --panel-border: rgba(226, 232, 246, 0.9);
+        --panel-highlight: rgba(255, 255, 255, 0.4);
+        --panel-shadow: rgba(24, 46, 94, 0.08);
+        --main-panel-bg: rgba(255, 255, 255, 0.72);
+        --main-panel-border: rgba(210, 218, 234, 0.9);
+        --main-panel-highlight: rgba(255, 255, 255, 0.4);
+        --main-panel-shadow: rgba(24, 46, 94, 0.14);
+        --metric-border: rgba(219, 226, 240, 0.9);
+        --timeline-border: rgba(225, 231, 244, 0.9);
+        --header-divider: rgba(226, 231, 244, 0.8);
+        --score-bar-bg: #f1f3f9;
+        --score-bar-gradient-end: #32e3c5;
+        --hover-card-bg: rgba(255, 255, 255, 0.96);
+        --hover-card-border: rgba(210, 218, 234, 0.95);
+        --hover-card-shadow: 0 20px 44px rgba(24, 46, 94, 0.14);
+        --hover-pill-bg: rgba(60, 144, 240, 0.12);
+        --hover-pill-border: rgba(60, 144, 240, 0.3);
+        --hover-pill-color: var(--accent);
+        --legend-bg: rgba(255, 255, 255, 0.78);
+        --legend-border: rgba(225, 231, 244, 0.8);
+        --tag-bg: rgba(60, 144, 240, 0.12);
+        --tag-border: rgba(60, 144, 240, 0.3);
+        --tag-color: var(--accent);
+        --viewer-bg: #ffffff;
+        --protein-surface-opacity: 0.32;
+        --picker-bg: rgba(255, 255, 255, 0.88);
+        --picker-border: rgba(226, 231, 244, 0.9);
+        --picker-shadow: 0 18px 45px rgba(15, 30, 60, 0.18);
+      }
+
+      :root[data-color-mode="dark"] {
+        color-scheme: dark;
       }
 
       * {
@@ -35,11 +71,111 @@
       body {
         margin: 0;
         min-height: 100vh;
-        display: grid;
-        place-items: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         padding: clamp(24px, 5vw, 64px);
-        background: #ffffff;
+        background: var(--page-background);
         color: var(--text);
+      }
+
+      .page-shell {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        align-items: center;
+      }
+
+      .page-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .screenshot-btn {
+        padding: 12px 20px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 14px 32px rgba(18, 24, 38, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      }
+
+      .screenshot-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .screenshot-btn:not(:disabled):hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 40px rgba(18, 24, 38, 0.14);
+      }
+
+      .theme-picker {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 12px 16px;
+        border-radius: 999px;
+        background: var(--picker-bg);
+        border: 1px solid var(--picker-border);
+        box-shadow: var(--picker-shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .theme-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.65);
+        background: rgba(255, 255, 255, 0.65);
+        color: var(--text);
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: border 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      }
+
+      body[data-color-mode="dark"] .theme-chip {
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: rgba(13, 19, 30, 0.75);
+        color: var(--muted);
+      }
+
+      .theme-chip__swatch {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: linear-gradient(125deg, var(--chip-color-a), var(--chip-color-b));
+        border: 2px solid rgba(255, 255, 255, 0.8);
+      }
+
+      body[data-color-mode="dark"] .theme-chip__swatch {
+        border-color: rgba(10, 16, 26, 0.8);
+      }
+
+      .theme-chip__label {
+        white-space: nowrap;
+      }
+
+      .theme-chip.is-active {
+        border-color: var(--accent);
+        box-shadow: 0 12px 32px rgba(18, 24, 38, 0.15);
+        transform: translateY(-1px);
+      }
+
+      body[data-color-mode="dark"] .theme-chip.is-active {
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
       }
 
       .mockup-frame {
@@ -47,19 +183,20 @@
         height: 800px;
         display: flex;
         flex-direction: column;
-        background: #ffffff;
+        background: var(--surface);
         border-radius: 36px;
-        border: 1px solid rgba(226, 231, 244, 0.6);
+        border: 1px solid var(--frame-border);
         overflow: hidden;
         position: relative;
         isolation: isolate;
+        box-shadow: var(--shadow);
       }
 
       .mockup-frame::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(160deg, rgba(60, 144, 240, 0.05), transparent);
+        background: var(--frame-overlay);
         pointer-events: none;
         z-index: -1;
       }
@@ -70,6 +207,7 @@
         gap: 10px;
         padding: 16px 28px;
         border-bottom: 1px solid var(--border);
+        background: var(--surface);
       }
 
       .window-dot {
@@ -94,24 +232,24 @@
 
       .content {
         flex: 1;
-        min-height: 0; /* allow children to shrink inside fixed frame */
+        min-height: 0;
         display: grid;
         grid-template-columns: 360px 1fr;
         padding: 28px 32px;
         gap: 32px;
-        background: #ffffff;
+        background: var(--surface);
       }
 
       .sidebar {
-        background: var(--surface);
+        background: var(--sidebar-surface);
         border-radius: 26px;
         padding: 26px;
         display: flex;
         flex-direction: column;
         gap: 28px;
-        border: 1px solid rgba(226, 232, 246, 0.9);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4),
-          0 18px 40px rgba(24, 46, 94, 0.08);
+        border: 1px solid var(--panel-border);
+        box-shadow: inset 0 0 0 1px var(--panel-highlight),
+          0 18px 40px var(--panel-shadow);
       }
 
       .section-label {
@@ -135,6 +273,7 @@
         font-size: 3.6rem;
         font-weight: 700;
         color: var(--accent);
+        text-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
       }
 
       .score-unit {
@@ -151,7 +290,7 @@
       .score-bar {
         height: 14px;
         border-radius: 999px;
-        background: var(--surface-soft);
+        background: var(--score-bar-bg);
         overflow: hidden;
         position: relative;
       }
@@ -162,15 +301,15 @@
         inset: 0;
         width: 82%;
         border-radius: inherit;
-        background: linear-gradient(90deg, var(--accent), #32e3c5);
-        box-shadow: 0 8px 20px rgba(50, 202, 192, 0.36);
+        background: linear-gradient(90deg, var(--accent), var(--score-bar-gradient-end, #32e3c5));
+        box-shadow: 0 8px 20px rgba(50, 202, 192, 0.24);
       }
 
       .metric-card {
-        background: var(--surface-soft);
+        background: var(--surface);
         border-radius: 22px;
         padding: 18px 20px;
-        border: 1px solid rgba(219, 226, 240, 0.9);
+        border: 1px solid var(--metric-border);
         display: flex;
         flex-direction: column;
         gap: 8px;
@@ -212,7 +351,7 @@
         padding: 14px 16px;
         border-radius: 18px;
         background: var(--surface);
-        border: 1px solid rgba(225, 231, 244, 0.9);
+        border: 1px solid var(--timeline-border);
       }
 
       .timeline-entry strong {
@@ -226,16 +365,17 @@
       }
 
       .main-panel {
-        background: rgba(255, 255, 255, 0.72);
+        background: var(--main-panel-bg);
         border-radius: 30px;
-        border: 1px solid rgba(210, 218, 234, 0.9);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4),
-          0 20px 44px rgba(24, 46, 94, 0.14);
+        border: 1px solid var(--main-panel-border);
+        box-shadow: inset 0 0 0 1px var(--main-panel-highlight),
+          0 20px 44px var(--main-panel-shadow);
         display: grid;
         grid-template-rows: auto minmax(0, 1fr);
         overflow: hidden;
         height: 100%;
         min-height: 0;
+        backdrop-filter: blur(6px);
       }
 
       .main-header {
@@ -244,7 +384,7 @@
         justify-content: space-between;
         padding: 26px 32px 18px;
         gap: 18px;
-        border-bottom: 1px solid rgba(226, 231, 244, 0.8);
+        border-bottom: 1px solid var(--header-divider);
       }
 
       .protein-meta {
@@ -253,6 +393,7 @@
         align-items: center;
         font-size: 0.95rem;
         color: var(--muted);
+        flex-wrap: wrap;
       }
 
       .protein-meta strong {
@@ -268,15 +409,16 @@
       .tag {
         padding: 8px 14px;
         border-radius: 999px;
-        background: var(--accent-soft);
-        color: var(--accent);
+        background: var(--tag-bg);
+        color: var(--tag-color);
+        border: 1px solid var(--tag-border);
         font-size: 0.85rem;
         font-weight: 500;
       }
 
       .viewer {
         position: relative;
-        background: #ffffff;
+        background: var(--surface);
         display: flex;
         align-items: flex-start;
         justify-content: center;
@@ -326,11 +468,11 @@
         position: absolute;
         right: 24px;
         top: 24px;
-        bottom: auto;
         padding: 18px 20px;
         border-radius: 18px;
-        background: rgba(255, 255, 255, 0.96);
-        border: 1px solid rgba(210, 218, 234, 0.95);
+        background: var(--hover-card-bg);
+        border: 1px solid var(--hover-card-border);
+        box-shadow: var(--hover-card-shadow);
         display: grid;
         gap: 6px;
         width: 220px;
@@ -351,8 +493,9 @@
         padding: 6px 10px;
         border-radius: 999px;
         font-size: 0.78rem;
-        background: rgba(60, 144, 240, 0.12);
-        color: var(--accent);
+        background: var(--hover-pill-bg);
+        color: var(--hover-pill-color);
+        border: 1px solid var(--hover-pill-border);
         width: fit-content;
       }
 
@@ -370,14 +513,14 @@
 
       .legend {
         position: absolute;
-        bottom: 28px;
+        bottom: 50px;
         left: 32px;
         display: inline-flex;
         gap: 16px;
         padding: 12px 18px;
-        background: rgba(255, 255, 255, 0.78);
+        background: var(--legend-bg);
         border-radius: 16px;
-        border: 1px solid rgba(225, 231, 244, 0.8);
+        border: 1px solid var(--legend-border);
         backdrop-filter: blur(10px);
         z-index: 6;
       }
@@ -396,162 +539,404 @@
         border-radius: 999px;
       }
 
-      .legend-swatch.is-score {
-        background: var(--accent);
+      .legend-swatch.is-antibody {
+        background: #2fa36f;
       }
 
-      .legend-swatch.is-similarity {
-        background: #32e3c5;
+      .legend-swatch.is-antigen {
+        background: #d54444;
       }
 
-      .legend-swatch.is-warning {
-        background: var(--warning);
+      .legend-swatch.is-surface {
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: inset 0 0 0 1px rgba(18, 33, 42, 0.08);
+      }
+
+      body,
+      .mockup-frame {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
     </style>
   </head>
   <body>
-    <div class="mockup-frame">
-      <div class="window-controls">
-        <span class="window-dot is-close"></span>
-        <span class="window-dot is-minimize"></span>
-        <span class="window-dot is-fullscreen"></span>
+    <div class="page-shell">
+      <div class="theme-picker" role="group" aria-label="Color themes">
+        <button class="theme-chip is-active" type="button" data-theme-key="aurora" aria-pressed="true">
+          <span class="theme-chip__swatch" style="--chip-color-a: #3c90f0; --chip-color-b: #f6f8fc"></span>
+          <span class="theme-chip__label">Aurora</span>
+        </button>
+        <button class="theme-chip" type="button" data-theme-key="seafoam" aria-pressed="false">
+          <span class="theme-chip__swatch" style="--chip-color-a: #3d6875; --chip-color-b: #eaeeee"></span>
+          <span class="theme-chip__label">Seafoam</span>
+        </button>
+        <button class="theme-chip" type="button" data-theme-key="deep" aria-pressed="false">
+          <span class="theme-chip__swatch" style="--chip-color-a: #3aa8b7; --chip-color-b: #0c191d"></span>
+          <span class="theme-chip__label">Deep Teal</span>
+        </button>
+        <button class="theme-chip" type="button" data-theme-key="midnight" aria-pressed="false">
+          <span class="theme-chip__swatch" style="--chip-color-a: #60a5fa; --chip-color-b: #0b1220"></span>
+          <span class="theme-chip__label">Midnight</span>
+        </button>
       </div>
-      <div class="content">
-        <aside class="sidebar">
-          <span class="section-label">Oncera Insight</span>
-          <div class="score-highlight">
-            <span class="section-label">Activity Score</span>
-            <div class="score-value">
-              82<span class="score-unit">/100</span>
-            </div>
-            <p class="score-subtext">
-              Protein-ligand complex ranked in the upper 12% of the current
-              discovery batch.
-            </p>
-            <div class="score-bar" aria-hidden="true"></div>
-          </div>
+      <div class="page-actions">
+        <button id="download-screenshot" class="screenshot-btn" type="button">
+          Download Screenshot
+        </button>
+      </div>
 
-          <div class="metric-card">
-            <span class="metric-title">Binding Confidence</span>
-            <span class="metric-value">0.91</span>
-            <span class="metric-trend">+4.6% vs last run</span>
-          </div>
-
-          <div class="metric-card">
-            <span class="metric-title">Toxicity Screen</span>
-            <span class="metric-value" style="color: var(--warning)">Watch</span>
-            <span class="score-subtext">
-              Elevated signal on CYP2C9. Recommend secondary assay.
-            </span>
-          </div>
-
-          <div class="timeline">
-            <span class="section-label">Latest Events</span>
-            <div class="timeline-entry">
-              <strong>Docking Simulation</strong>
-              <span class="timeline-meta">Completed • 6 mins ago</span>
+      <div class="mockup-frame">
+        <div class="window-controls">
+          <span class="window-dot is-close"></span>
+          <span class="window-dot is-minimize"></span>
+          <span class="window-dot is-fullscreen"></span>
+        </div>
+        <div class="content">
+          <aside class="sidebar">
+            <span class="section-label">Oncera Insight</span>
+            <div class="score-highlight">
+              <span class="section-label">Binding Score</span>
+              <div class="score-value">
+                82<span class="score-unit">/100</span>
+              </div>
+              <p class="score-subtext">
+                Protein-ligand complex ranked in the upper 12% of the current discovery batch.
+              </p>
+              <div class="score-bar" aria-hidden="true"></div>
             </div>
-            <div class="timeline-entry">
-              <strong>Feedback Applied</strong>
-              <span class="timeline-meta">Medicinal chemistry notes merged</span>
-            </div>
-            <div class="timeline-entry">
-              <strong>Deploy to Review</strong>
-              <span class="timeline-meta">Waiting on validation set</span>
-            </div>
-          </div>
-        </aside>
 
-        <main class="main-panel">
-          <header class="main-header">
-            <div>
-              <span class="section-label">Protein Viewer</span>
-              <div class="protein-meta">
-                <span>ID: <strong>BEAM-P12</strong></span>
-                <span>Chain: <strong>Alpha</strong></span>
-                <span>Ligand: <strong>OC-47</strong></span>
+            <div class="metric-card">
+              <span class="metric-title">Binding Confidence</span>
+              <span class="metric-value">0.91</span>
+              <span class="metric-trend">+4.6% vs last run</span>
+            </div>
+
+            <div class="timeline">
+              <span class="section-label">Latest Events</span>
+              <div class="timeline-entry">
+                <strong>Docking Simulation</strong>
+                <span class="timeline-meta">Completed • 6 mins ago</span>
+              </div>
+              <div class="timeline-entry">
+                <strong>Feedback Applied</strong>
+                <span class="timeline-meta">Medicinal chemistry notes merged</span>
+              </div>
+              <div class="timeline-entry">
+                <strong>Deploy to Review</strong>
+                <span class="timeline-meta">Waiting on validation set</span>
               </div>
             </div>
-            <div class="tags">
-              <span class="tag">High Affinity</span>
-              <span class="tag">Stability +12%</span>
-              <span class="tag">AI Assisted</span>
-            </div>
-          </header>
+          </aside>
 
-          <section class="viewer">
-            <div class="protein-visual">
-              <div
-                id="protein-viewer"
-                role="img"
-                aria-label="3D rendering of the BEAM-P12 protein structure"
-              ></div>
-            </div>
-            <div class="hover-card">
-              <span class="hover-title">Pocket Snapshot</span>
-              <span class="hover-pill">Residue 162 · Ser</span>
-              <div class="hover-metric">
-                <span>Interaction score</span>
-                <strong>18.4</strong>
+          <main class="main-panel">
+            <header class="main-header">
+              <div>
+                <span class="section-label">Protein Viewer</span>
+                <div class="protein-meta">
+                  <span>Target: <strong>ICAMxyz</strong></span>
+                </div>
               </div>
-              <div class="hover-metric">
-                <span>Similarity</span>
-                <strong>94%</strong>
+              <div class="tags">
+                <span class="tag">High Affinity</span>
+                <span class="tag">Develobility 80%</span>
               </div>
-            </div>
-            <div class="legend">
-              <span class="legend-item">
-                <span class="legend-swatch is-score"></span>
-                Score Field
-              </span>
-              <span class="legend-item">
-                <span class="legend-swatch is-similarity"></span>
-                Similarity
-              </span>
-              <span class="legend-item">
-                <span class="legend-swatch is-warning"></span>
-                Watchlist
-              </span>
-            </div>
-          </section>
-        </main>
+            </header>
+
+            <section class="viewer">
+              <div class="protein-visual">
+                <div
+                  id="protein-viewer"
+                  role="img"
+                  aria-label="3D rendering of the 1KIQ antibody-antigen complex"
+                ></div>
+              </div>
+              <div class="hover-card">
+                <span class="hover-title">Pocket Snapshot</span>
+                <span class="hover-pill">Residue 162 · Ser</span>
+                <div class="hover-metric">
+                  <span>Interaction score</span>
+                  <strong>18.4</strong>
+                </div>
+                <div class="hover-metric">
+                  <span>Similarity</span>
+                  <strong>94%</strong>
+                </div>
+              </div>
+              <div class="legend">
+                <span class="legend-item">
+                  <span class="legend-swatch is-antibody"></span>
+                  Antibody · Chains A/B
+                </span>
+                <span class="legend-item">
+                  <span class="legend-swatch is-antigen"></span>
+                  Antigen · Chain C
+                </span>
+                <span class="legend-item">
+                  <span class="legend-swatch is-surface"></span>
+                  Molecular Surface
+                </span>
+              </div>
+            </section>
+          </main>
+        </div>
       </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.6/3Dmol-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        if (typeof $3Dmol === "undefined") {
+      const THEME_PRESETS = {
+        aurora: {
+          colorMode: "light",
+          vars: {
+            "--page-background": "#ffffff",
+            "--bg": "#f6f8fc",
+            "--surface": "#ffffff",
+            "--surface-soft": "#f1f3f9",
+            "--sidebar-surface": "#ffffff",
+            "--text": "#121826",
+            "--muted": "#6a748a",
+            "--border": "#e1e6f2",
+            "--accent": "#3c90f0",
+            "--accent-soft": "rgba(60, 144, 240, 0.14)",
+            "--positive": "#24a776",
+            "--warning": "#f6b020",
+            "--shadow": "0 40px 80px rgba(15, 35, 80, 0.12)",
+            "--frame-border": "rgba(226, 231, 244, 0.6)",
+            "--frame-overlay": "linear-gradient(160deg, rgba(60, 144, 240, 0.05), transparent)",
+            "--panel-border": "rgba(226, 232, 246, 0.9)",
+            "--panel-highlight": "rgba(255, 255, 255, 0.4)",
+            "--panel-shadow": "rgba(24, 46, 94, 0.08)",
+            "--main-panel-bg": "rgba(255, 255, 255, 0.72)",
+            "--main-panel-border": "rgba(210, 218, 234, 0.9)",
+            "--main-panel-highlight": "rgba(255, 255, 255, 0.4)",
+            "--main-panel-shadow": "rgba(24, 46, 94, 0.14)",
+            "--metric-border": "rgba(219, 226, 240, 0.9)",
+            "--timeline-border": "rgba(225, 231, 244, 0.9)",
+            "--header-divider": "rgba(226, 231, 244, 0.8)",
+            "--score-bar-bg": "#f1f3f9",
+            "--hover-card-bg": "rgba(255, 255, 255, 0.96)",
+            "--hover-card-border": "rgba(210, 218, 234, 0.95)",
+            "--hover-card-shadow": "0 20px 44px rgba(24, 46, 94, 0.14)",
+            "--hover-pill-bg": "rgba(60, 144, 240, 0.12)",
+            "--hover-pill-border": "rgba(60, 144, 240, 0.3)",
+            "--hover-pill-color": "#1f2c44",
+            "--legend-bg": "rgba(255, 255, 255, 0.78)",
+            "--legend-border": "rgba(225, 231, 244, 0.8)",
+            "--tag-bg": "rgba(60, 144, 240, 0.12)",
+            "--tag-border": "rgba(60, 144, 240, 0.3)",
+            "--tag-color": "#1f2c44",
+            "--viewer-bg": "#ffffff",
+            "--protein-surface-opacity": "0.32",
+            "--picker-bg": "rgba(255, 255, 255, 0.88)",
+            "--picker-border": "rgba(226, 231, 244, 0.9)",
+            "--picker-shadow": "0 18px 45px rgba(15, 30, 60, 0.18)",
+            "--score-bar-gradient-end": "#32e3c5"
+          }
+        },
+        seafoam: {
+          colorMode: "light",
+          vars: {
+            "--page-background": "radial-gradient(1200px 600px at 10% -10%, rgba(61, 104, 117, 0.10), transparent), radial-gradient(900px 520px at 110% 20%, rgba(61, 104, 117, 0.06), transparent), #eaeeee",
+            "--bg": "#eaeeee",
+            "--surface": "#ffffff",
+            "--surface-soft": "#f4f7f7",
+            "--sidebar-surface": "#ffffff",
+            "--text": "#13212a",
+            "--muted": "#5e7380",
+            "--border": "#d6dfe3",
+            "--accent": "#3d6875",
+            "--accent-soft": "rgba(61, 104, 117, 0.14)",
+            "--positive": "#24a776",
+            "--warning": "#e19a0b",
+            "--shadow": "0 40px 80px rgba(17, 35, 50, 0.12)",
+            "--frame-border": "rgba(214, 223, 227, 0.7)",
+            "--frame-overlay": "linear-gradient(160deg, rgba(61, 104, 117, 0.06), transparent 60%)",
+            "--panel-border": "rgba(214, 223, 227, 0.9)",
+            "--panel-highlight": "rgba(255, 255, 255, 0.4)",
+            "--panel-shadow": "rgba(17, 35, 50, 0.08)",
+            "--main-panel-bg": "rgba(255, 255, 255, 0.72)",
+            "--main-panel-border": "rgba(214, 223, 227, 0.9)",
+            "--main-panel-highlight": "rgba(255, 255, 255, 0.4)",
+            "--main-panel-shadow": "rgba(17, 35, 50, 0.14)",
+            "--metric-border": "rgba(214, 223, 227, 0.9)",
+            "--timeline-border": "rgba(214, 223, 227, 0.9)",
+            "--header-divider": "rgba(214, 223, 227, 0.8)",
+            "--score-bar-bg": "#f4f7f7",
+            "--hover-card-bg": "rgba(255, 255, 255, 0.96)",
+            "--hover-card-border": "rgba(214, 223, 227, 0.95)",
+            "--hover-card-shadow": "0 20px 44px rgba(17, 35, 50, 0.14)",
+            "--hover-pill-bg": "rgba(61, 104, 117, 0.14)",
+            "--hover-pill-border": "rgba(61, 104, 117, 0.32)",
+            "--hover-pill-color": "#1d323b",
+            "--legend-bg": "rgba(255, 255, 255, 0.78)",
+            "--legend-border": "rgba(214, 223, 227, 0.8)",
+            "--tag-bg": "rgba(61, 104, 117, 0.14)",
+            "--tag-border": "rgba(61, 104, 117, 0.28)",
+            "--tag-color": "#1d323b",
+            "--viewer-bg": "#ffffff",
+            "--protein-surface-opacity": "0.32",
+            "--picker-bg": "rgba(255, 255, 255, 0.92)",
+            "--picker-border": "rgba(214, 223, 227, 0.9)",
+            "--picker-shadow": "0 18px 45px rgba(17, 35, 50, 0.2)",
+            "--score-bar-gradient-end": "#4190b3"
+          }
+        },
+        deep: {
+          colorMode: "dark",
+          vars: {
+            "--page-background": "radial-gradient(1200px 600px at 10% -10%, rgba(27, 55, 64, 0.22), transparent), radial-gradient(800px 500px at 110% 20%, rgba(58, 168, 183, 0.12), transparent), #0c191d",
+            "--bg": "#0c191d",
+            "--surface": "#12272f",
+            "--surface-soft": "#0f2127",
+            "--sidebar-surface": "#0f2127",
+            "--text": "#e6f1f3",
+            "--muted": "#9ab0b6",
+            "--border": "rgba(154, 176, 182, 0.18)",
+            "--accent": "#3aa8b7",
+            "--accent-soft": "rgba(58, 168, 183, 0.16)",
+            "--positive": "#59d6bd",
+            "--warning": "#f6b020",
+            "--shadow": "0 40px 80px rgba(0, 0, 0, 0.4)",
+            "--frame-border": "rgba(154, 176, 182, 0.2)",
+            "--frame-overlay": "linear-gradient(160deg, rgba(27, 55, 64, 0.22), transparent 60%)",
+            "--panel-border": "rgba(154, 176, 182, 0.14)",
+            "--panel-highlight": "rgba(255, 255, 255, 0.03)",
+            "--panel-shadow": "rgba(0, 0, 0, 0.35)",
+            "--main-panel-bg": "rgba(17, 39, 47, 0.72)",
+            "--main-panel-border": "rgba(154, 176, 182, 0.16)",
+            "--main-panel-highlight": "rgba(255, 255, 255, 0.03)",
+            "--main-panel-shadow": "rgba(0, 0, 0, 0.5)",
+            "--metric-border": "rgba(154, 176, 182, 0.12)",
+            "--timeline-border": "rgba(154, 176, 182, 0.12)",
+            "--header-divider": "rgba(154, 176, 182, 0.14)",
+            "--score-bar-bg": "#12272f",
+            "--hover-card-bg": "rgba(15, 33, 39, 0.96)",
+            "--hover-card-border": "rgba(154, 176, 182, 0.2)",
+            "--hover-card-shadow": "0 20px 44px rgba(0, 0, 0, 0.5)",
+            "--hover-pill-bg": "rgba(58, 168, 183, 0.26)",
+            "--hover-pill-border": "rgba(58, 168, 183, 0.5)",
+            "--hover-pill-color": "#e6f1f3",
+            "--legend-bg": "rgba(15, 33, 39, 0.78)",
+            "--legend-border": "rgba(154, 176, 182, 0.18)",
+            "--tag-bg": "rgba(58, 168, 183, 0.22)",
+            "--tag-border": "rgba(58, 168, 183, 0.4)",
+            "--tag-color": "#e6f1f3",
+            "--viewer-bg": "#0f2127",
+            "--protein-surface-opacity": "0.28",
+            "--picker-bg": "rgba(10, 18, 24, 0.85)",
+            "--picker-border": "rgba(154, 176, 182, 0.3)",
+            "--picker-shadow": "0 18px 45px rgba(0, 0, 0, 0.5)",
+            "--score-bar-gradient-end": "#32e3c5"
+          }
+        },
+        midnight: {
+          colorMode: "dark",
+          vars: {
+            "--page-background": "#0b1220",
+            "--bg": "#0b1220",
+            "--surface": "#111827",
+            "--surface-soft": "#0f172a",
+            "--sidebar-surface": "#0f172a",
+            "--text": "#e5e7eb",
+            "--muted": "#94a3b8",
+            "--border": "rgba(148, 163, 184, 0.16)",
+            "--accent": "#60a5fa",
+            "--accent-soft": "rgba(96, 165, 250, 0.16)",
+            "--positive": "#34d399",
+            "--warning": "#f59e0b",
+            "--shadow": "0 40px 80px rgba(0, 0, 0, 0.35)",
+            "--frame-border": "rgba(148, 163, 184, 0.18)",
+            "--frame-overlay": "linear-gradient(160deg, rgba(96, 165, 250, 0.08), transparent)",
+            "--panel-border": "rgba(148, 163, 184, 0.12)",
+            "--panel-highlight": "rgba(255, 255, 255, 0.03)",
+            "--panel-shadow": "rgba(0, 0, 0, 0.35)",
+            "--main-panel-bg": "rgba(17, 24, 39, 0.72)",
+            "--main-panel-border": "rgba(148, 163, 184, 0.16)",
+            "--main-panel-highlight": "rgba(255, 255, 255, 0.03)",
+            "--main-panel-shadow": "rgba(0, 0, 0, 0.5)",
+            "--metric-border": "rgba(148, 163, 184, 0.1)",
+            "--timeline-border": "rgba(148, 163, 184, 0.12)",
+            "--header-divider": "rgba(148, 163, 184, 0.14)",
+            "--score-bar-bg": "#111827",
+            "--hover-card-bg": "rgba(17, 24, 39, 0.96)",
+            "--hover-card-border": "rgba(148, 163, 184, 0.2)",
+            "--hover-card-shadow": "0 20px 44px rgba(0, 0, 0, 0.5)",
+            "--hover-pill-bg": "rgba(96, 165, 250, 0.18)",
+            "--hover-pill-border": "rgba(96, 165, 250, 0.34)",
+            "--hover-pill-color": "#dbeafe",
+            "--legend-bg": "rgba(17, 24, 39, 0.78)",
+            "--legend-border": "rgba(148, 163, 184, 0.16)",
+            "--tag-bg": "rgba(96, 165, 250, 0.18)",
+            "--tag-border": "rgba(96, 165, 250, 0.34)",
+            "--tag-color": "#dbeafe",
+            "--viewer-bg": "#0f172a",
+            "--protein-surface-opacity": "0.28",
+            "--picker-bg": "rgba(8, 13, 24, 0.85)",
+            "--picker-border": "rgba(148, 163, 184, 0.35)",
+            "--picker-shadow": "0 18px 45px rgba(0, 0, 0, 0.5)",
+            "--score-bar-gradient-end": "#32e3c5"
+          }
+        }
+      };
+
+      const ANTIBODY_CHAINS = ["A", "B"];
+      const ANTIGEN_CHAINS = ["C"];
+      const ANTIBODY_COLOR = "#2fa36f";
+      const ANTIGEN_COLOR = "#d54444";
+
+      const getCssVar = (name, fallback = "") => {
+        const value = getComputedStyle(document.documentElement)
+          .getPropertyValue(name)
+          .trim();
+        return value || fallback;
+      };
+
+      let viewer;
+      let viewerReady = false;
+
+      const applyProteinStyle = () => {
+        if (!viewerReady || !viewer) {
           return;
         }
 
-        const viewerElement = document.getElementById("protein-viewer");
-        if (!viewerElement) {
-          return;
-        }
-
-        const viewer = $3Dmol.createViewer(viewerElement, {
-          backgroundColor: "#ffffff",
-          backgroundAlpha: 1.0,
-          antialias: true,
-          webglOptions: {
-            alpha: false,
-          },
+        viewer.setStyle({}, {});
+        ANTIBODY_CHAINS.forEach((chain) => {
+          viewer.addStyle({ chain }, { cartoon: { color: ANTIBODY_COLOR } });
+        });
+        ANTIGEN_CHAINS.forEach((chain) => {
+          viewer.addStyle({ chain }, { cartoon: { color: ANTIGEN_COLOR } });
         });
 
-        const renderProtein = () => {
-          $3Dmol.download("pdb:1MBA", viewer, {}, function () {
-            viewer.setStyle({}, { cartoon: { color: "spectrum" } });
-            viewer.addSurface($3Dmol.SurfaceType.MS, {
-              opacity: 0.32,
-              color: "white",
-            });
-            viewer.setBackgroundColor("#ffffff");
-            viewer.zoomTo();
-            viewer.render();
-          });
-        };
+        if (viewer.removeAllSurfaces) {
+          viewer.removeAllSurfaces();
+        }
 
-        renderProtein();
+        const opacity = parseFloat(getCssVar("--protein-surface-opacity", "0.32")) || 0.32;
+        viewer.addSurface($3Dmol.SurfaceType.MS, { opacity, color: "white" });
+        viewer.setBackgroundColor(getCssVar("--viewer-bg", "#ffffff"));
+        viewer.render();
+      };
+
+      const initViewer = () => {
+        const viewerElement = document.getElementById("protein-viewer");
+        if (!viewerElement || typeof $3Dmol === "undefined") {
+          return;
+        }
+
+        viewer = $3Dmol.createViewer(viewerElement, {
+          backgroundColor: getCssVar("--viewer-bg", "#ffffff"),
+          backgroundAlpha: 1.0,
+          antialias: true,
+          webglOptions: { alpha: false },
+        });
+
+        $3Dmol.download("pdb:1KIQ", viewer, {}, function () {
+          viewerReady = true;
+          applyProteinStyle();
+          viewer.zoomTo();
+          viewer.render();
+        });
 
         if (typeof ResizeObserver !== "undefined") {
           const resizeObserver = new ResizeObserver(() => viewer.resize());
@@ -560,6 +945,93 @@
         } else {
           window.addEventListener("resize", () => viewer.resize());
         }
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const root = document.documentElement;
+        const themeButtons = Array.from(document.querySelectorAll("[data-theme-key]"));
+        const screenshotButton = document.getElementById("download-screenshot");
+        let currentTheme = themeButtons[0]?.dataset.themeKey || "aurora";
+
+        const setActiveButton = (activeKey) => {
+          themeButtons.forEach((btn) => {
+            const isActive = btn.dataset.themeKey === activeKey;
+            btn.classList.toggle("is-active", isActive);
+            btn.setAttribute("aria-pressed", String(isActive));
+          });
+        };
+
+        const resetScreenshotButton = () => {
+          if (!screenshotButton) return;
+          screenshotButton.disabled = false;
+          screenshotButton.textContent = "Download Screenshot";
+        };
+
+        const applyTheme = (key) => {
+          const preset = THEME_PRESETS[key];
+          if (!preset) {
+            return;
+          }
+
+          currentTheme = key;
+          root.dataset.colorMode = preset.colorMode || "light";
+          Object.entries(preset.vars).forEach(([token, value]) => {
+            root.style.setProperty(token, value);
+          });
+          setActiveButton(key);
+          applyProteinStyle();
+        };
+
+        themeButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const targetTheme = button.dataset.themeKey;
+            if (targetTheme && targetTheme !== currentTheme) {
+              applyTheme(targetTheme);
+              resetScreenshotButton();
+            }
+          });
+        });
+
+        if (screenshotButton) {
+          screenshotButton.addEventListener("click", async () => {
+            if (typeof window.html2canvas === "undefined") {
+              return;
+            }
+            const target = document.querySelector(".mockup-frame");
+            if (!target) {
+              return;
+            }
+
+            screenshotButton.disabled = true;
+            screenshotButton.textContent = "Capturing…";
+
+            try {
+              const scale = Math.max(window.devicePixelRatio || 1, 2);
+              const canvas = await window.html2canvas(target, {
+                backgroundColor: null,
+                useCORS: true,
+                scale,
+              });
+              const link = document.createElement("a");
+              const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+              link.href = canvas.toDataURL("image/png");
+              link.download = `oncera-hero-${currentTheme}-${timestamp}.png`;
+              link.click();
+            } catch (error) {
+              console.error("Screenshot failed:", error);
+              screenshotButton.textContent = "Retry Screenshot";
+              screenshotButton.disabled = false;
+              return;
+            }
+
+            screenshotButton.disabled = false;
+            screenshotButton.textContent = "Saved ✓";
+            setTimeout(resetScreenshotButton, 2000);
+          });
+        }
+
+        applyTheme(currentTheme);
+        initViewer();
       });
     </script>
   </body>

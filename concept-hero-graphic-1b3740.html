@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oncera Concept Mockup — 1B3740 Theme</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        /* Theme base */
+        --brand: #1b3740; /* requested theme color */
+
+        /* Palette derived around brand */
+        --bg: #0c191d;
+        --surface: #12272f;
+        --surface-soft: #0f2127;
+        --text: #e6f1f3;
+        --muted: #9ab0b6;
+        --border: rgba(154, 176, 182, 0.18);
+        --accent: #3aa8b7; /* brighter teal for emphasis on dark */
+        --accent-soft: rgba(58, 168, 183, 0.16);
+        --positive: #59d6bd;
+        --warning: #f6b020;
+        --shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: clamp(24px, 5vw, 64px);
+        background:
+          radial-gradient(1200px 600px at 10% -10%, rgba(27, 55, 64, 0.22), transparent),
+          radial-gradient(800px 500px at 110% 20%, rgba(58, 168, 183, 0.12), transparent),
+          var(--bg);
+        color: var(--text);
+      }
+
+      .mockup-frame {
+        width: 1280px;
+        height: 800px;
+        display: flex;
+        flex-direction: column;
+        background: var(--surface);
+        border-radius: 36px;
+        border: 1px solid rgba(154, 176, 182, 0.2);
+        overflow: hidden;
+        position: relative;
+        isolation: isolate;
+        box-shadow: var(--shadow);
+      }
+
+      .mockup-frame::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(160deg, rgba(27, 55, 64, 0.22), transparent 60%);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .window-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 28px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .window-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        background: var(--surface-soft);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+      }
+
+      .window-dot.is-close { background: #ff6a5e; }
+      .window-dot.is-minimize { background: #ffd86c; }
+      .window-dot.is-fullscreen { background: #3abb6a; }
+
+      .content {
+        flex: 1;
+        min-height: 0; /* allow children to shrink inside fixed frame */
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        padding: 28px 32px;
+        gap: 32px;
+        background: var(--surface);
+      }
+
+      .sidebar {
+        background: var(--surface-soft);
+        border-radius: 26px;
+        padding: 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        border: 1px solid rgba(154, 176, 182, 0.14);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+          0 18px 40px rgba(0, 0, 0, 0.35);
+      }
+
+      .section-label {
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .score-highlight { display: flex; flex-direction: column; gap: 10px; }
+
+      .score-value {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        font-size: 3.6rem;
+        font-weight: 700;
+        color: var(--accent);
+        text-shadow: 0 4px 24px rgba(58, 168, 183, 0.24);
+      }
+
+      .score-unit { font-size: 1.15rem; color: var(--muted); font-weight: 500; }
+
+      .score-subtext { font-size: 0.95rem; color: var(--muted); }
+
+      .score-bar {
+        height: 14px;
+        border-radius: 999px;
+        background: var(--surface);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .score-bar::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        width: 82%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--accent), #32e3c5);
+        box-shadow: 0 8px 20px rgba(50, 202, 192, 0.24);
+      }
+
+      .metric-card {
+        background: var(--surface);
+        border-radius: 22px;
+        padding: 18px 20px;
+        border: 1px solid rgba(154, 176, 182, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .metric-title { font-size: 0.85rem; color: var(--muted); }
+      .metric-value { font-size: 1.6rem; font-weight: 600; color: var(--text); }
+
+      .metric-trend {
+        font-size: 0.85rem;
+        color: var(--positive);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .metric-trend::before { content: "▲"; font-size: 0.75rem; }
+
+      .timeline { display: grid; gap: 16px; }
+
+      .timeline-entry {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 14px 16px;
+        border-radius: 18px;
+        background: var(--surface);
+        border: 1px solid rgba(154, 176, 182, 0.12);
+      }
+
+      .timeline-entry strong { font-weight: 600; color: var(--text); }
+      .timeline-meta { font-size: 0.85rem; color: var(--muted); }
+
+      .main-panel {
+        background: rgba(17, 39, 47, 0.72);
+        border-radius: 30px;
+        border: 1px solid rgba(154, 176, 182, 0.16);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+          0 20px 44px rgba(0, 0, 0, 0.5);
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+        overflow: hidden;
+        height: 100%;
+        min-height: 0;
+      }
+
+      .main-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 26px 32px 18px;
+        gap: 18px;
+        border-bottom: 1px solid rgba(154, 176, 182, 0.14);
+      }
+
+      .protein-meta {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+      .protein-meta strong { color: var(--text); }
+
+      .tags { display: inline-flex; gap: 10px; flex-wrap: wrap; }
+
+      .tag {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--brand) 20%, transparent);
+        color: var(--text);
+        border: 1px solid color-mix(in srgb, var(--brand) 40%, transparent);
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      .viewer {
+        position: relative;
+        background: var(--surface);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 24px;
+        border-radius: 30px;
+        overflow: hidden;
+        height: 100%;
+        min-height: 0;
+      }
+
+      .protein-visual {
+        height: calc(100% - 48px);
+        max-height: calc(100% - 48px);
+        aspect-ratio: 1 / 1;
+        max-width: calc(100% - 48px);
+        border-radius: 22px;
+        background: transparent;
+        position: relative;
+        overflow: hidden;
+        display: block;
+        align-self: flex-start;
+        margin: 0 auto;
+        z-index: 1;
+      }
+
+      #protein-viewer {
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        overflow: hidden;
+        background: transparent;
+        display: grid;
+        place-items: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      #protein-viewer canvas {
+        border-radius: inherit;
+        background: transparent !important;
+        position: relative !important;
+        z-index: 1 !important;
+        display: block;
+      }
+
+      .hover-card {
+        position: absolute;
+        right: 24px;
+        top: 24px;
+        bottom: auto;
+        padding: 18px 20px;
+        border-radius: 18px;
+        background: rgba(15, 33, 39, 0.96);
+        border: 1px solid rgba(154, 176, 182, 0.2);
+        display: grid;
+        gap: 6px;
+        width: 220px;
+        z-index: 999;
+        pointer-events: auto;
+      }
+
+      .hover-title { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+
+      .hover-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        background: color-mix(in srgb, var(--brand) 30%, transparent);
+        color: var(--text);
+        border: 1px solid color-mix(in srgb, var(--brand) 50%, transparent);
+        width: fit-content;
+      }
+
+      .hover-metric {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .hover-metric strong { color: var(--text); }
+
+      .legend {
+        position: absolute;
+        bottom: 28px;
+        left: 32px;
+        display: inline-flex;
+        gap: 16px;
+        padding: 12px 18px;
+        background: rgba(15, 33, 39, 0.78);
+        border-radius: 16px;
+        border: 1px solid rgba(154, 176, 182, 0.18);
+        backdrop-filter: blur(10px);
+        z-index: 6;
+      }
+
+      .legend-item { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--muted); }
+
+      .legend-swatch { width: 12px; height: 12px; border-radius: 999px; }
+      .legend-swatch.is-antibody { background: #2fa36f; }
+      .legend-swatch.is-antigen { background: #d54444; }
+      .legend-swatch.is-surface { background: rgba(255, 255, 255, 0.92); box-shadow: inset 0 0 0 1px rgba(18, 33, 42, 0.08); }
+    </style>
+  </head>
+  <body>
+    <div class="mockup-frame">
+      <div class="window-controls">
+        <span class="window-dot is-close"></span>
+        <span class="window-dot is-minimize"></span>
+        <span class="window-dot is-fullscreen"></span>
+      </div>
+      <div class="content">
+        <aside class="sidebar">
+          <span class="section-label">Oncera Insight</span>
+          <div class="score-highlight">
+            <span class="section-label">Activity Score</span>
+            <div class="score-value">
+              82<span class="score-unit">/100</span>
+            </div>
+            <p class="score-subtext">
+              Protein-ligand complex ranked in the upper 12% of the current
+              discovery batch.
+            </p>
+            <div class="score-bar" aria-hidden="true"></div>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-title">Binding Confidence</span>
+            <span class="metric-value">0.91</span>
+            <span class="metric-trend">+4.6% vs last run</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-title">Toxicity Screen</span>
+            <span class="metric-value" style="color: var(--warning)">Watch</span>
+            <span class="score-subtext">
+              Elevated signal on CYP2C9. Recommend secondary assay.
+            </span>
+          </div>
+
+          <div class="timeline">
+            <span class="section-label">Latest Events</span>
+            <div class="timeline-entry">
+              <strong>Docking Simulation</strong>
+              <span class="timeline-meta">Completed • 6 mins ago</span>
+            </div>
+            <div class="timeline-entry">
+              <strong>Feedback Applied</strong>
+              <span class="timeline-meta">Medicinal chemistry notes merged</span>
+            </div>
+            <div class="timeline-entry">
+              <strong>Deploy to Review</strong>
+              <span class="timeline-meta">Waiting on validation set</span>
+            </div>
+          </div>
+        </aside>
+
+        <main class="main-panel">
+          <header class="main-header">
+            <div>
+              <span class="section-label">Protein Viewer</span>
+              <div class="protein-meta">
+                <span>ID: <strong>BEAM-P12</strong></span>
+                <span>Chain: <strong>Alpha</strong></span>
+                <span>Ligand: <strong>OC-47</strong></span>
+              </div>
+            </div>
+            <div class="tags">
+              <span class="tag">High Affinity</span>
+              <span class="tag">Stability +12%</span>
+              <span class="tag">AI Assisted</span>
+            </div>
+          </header>
+
+          <section class="viewer">
+            <div class="protein-visual">
+              <div
+                id="protein-viewer"
+                role="img"
+                aria-label="3D rendering of the BEAM-P12 protein structure"
+              ></div>
+            </div>
+            <div class="hover-card">
+              <span class="hover-title">Pocket Snapshot</span>
+              <span class="hover-pill">Residue 162 · Ser</span>
+              <div class="hover-metric">
+                <span>Interaction score</span>
+                <strong>18.4</strong>
+              </div>
+              <div class="hover-metric">
+                <span>Similarity</span>
+                <strong>94%</strong>
+              </div>
+            </div>
+            <div class="legend">
+              <span class="legend-item">
+                <span class="legend-swatch is-antibody"></span>
+                Antibody · Chains A/B
+              </span>
+              <span class="legend-item">
+                <span class="legend-swatch is-antigen"></span>
+                Antigen · Chain C
+              </span>
+              <span class="legend-item">
+                <span class="legend-swatch is-surface"></span>
+                Molecular Surface
+              </span>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.6/3Dmol-min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        if (typeof $3Dmol === "undefined") {
+          return;
+        }
+
+        const viewerElement = document.getElementById("protein-viewer");
+        if (!viewerElement) {
+          return;
+        }
+
+        const viewerBackground = "#0f2127";
+
+        const viewer = $3Dmol.createViewer(viewerElement, {
+          backgroundColor: viewerBackground,
+          backgroundAlpha: 1.0,
+          antialias: true,
+          webglOptions: { alpha: false },
+        });
+
+        const ANTIBODY_CHAINS = ["A", "B"];
+        const ANTIGEN_CHAINS = ["C"];
+        const ANTIBODY_COLOR = "#2fa36f";
+        const ANTIGEN_COLOR = "#d54444";
+
+        const applyChainStyle = (chains, colorHex) => {
+          chains.forEach((chainId) => {
+            viewer.addStyle({ chain: chainId }, { cartoon: { color: colorHex } });
+          });
+        };
+
+        const renderProtein = () => {
+          $3Dmol.download("pdb:1KIQ", viewer, {}, function () {
+            viewer.setStyle({}, {});
+            applyChainStyle(ANTIBODY_CHAINS, ANTIBODY_COLOR);
+            applyChainStyle(ANTIGEN_CHAINS, ANTIGEN_COLOR);
+            viewer.addSurface($3Dmol.SurfaceType.MS, {
+              opacity: 0.28,
+              color: "white",
+            });
+            viewer.setBackgroundColor(viewerBackground);
+            viewer.zoomTo();
+            viewer.render();
+          });
+        };
+
+        renderProtein();
+
+        if (typeof ResizeObserver !== "undefined") {
+          const resizeObserver = new ResizeObserver(() => viewer.resize());
+          resizeObserver.observe(viewerElement);
+          window.addEventListener("beforeunload", () => resizeObserver.disconnect());
+        } else {
+          window.addEventListener("resize", () => viewer.resize());
+        }
+      });
+    </script>
+  </body>
+  <style>
+    /* Optional: smooth fonts on dark backgrounds */
+    body, .mockup-frame { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  </style>
+  </html>
+

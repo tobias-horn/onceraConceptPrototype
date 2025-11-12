@@ -886,16 +886,31 @@
             return;
           }
 
+          const viewerBackground = "#020812";
           viewer = $3Dmol.createViewer(viewerElement, {
-            backgroundColor: "#020812",
+            backgroundColor: viewerBackground,
           });
 
-          $3Dmol.download("pdb:1MBA", viewer, {}, function () {
-            viewer.setStyle({}, { cartoon: { color: "spectrum" } });
+          const antibodyChains = ["A", "B"];
+          const antigenChains = ["C"];
+          const antibodyColor = "#2fa36f";
+          const antigenColor = "#d54444";
+
+          const applyChainStyle = (chains, colorHex) => {
+            chains.forEach((chainId) => {
+              viewer.addStyle({ chain: chainId }, { cartoon: { color: colorHex } });
+            });
+          };
+
+          $3Dmol.download("pdb:1KIQ", viewer, {}, function () {
+            viewer.setStyle({}, {});
+            applyChainStyle(antibodyChains, antibodyColor);
+            applyChainStyle(antigenChains, antigenColor);
             viewer.addSurface($3Dmol.SurfaceType.MS, {
               opacity: 0.34,
               color: "white",
             });
+            viewer.setBackgroundColor(viewerBackground);
             viewer.zoomTo();
             startSpin();
             handleResize();
